@@ -1,0 +1,20 @@
+version: '2'
+services:
+  wordpress:
+    image: wordpress
+    links:
+    - db:mysql
+    ports:
+    - 8080:80/tcp
+  wp-lb:
+    image: rancher/lb-service-haproxy:v0.6.2
+    ports:
+    - 80:80/tcp
+    labels:
+      io.rancher.container.agent.role: environmentAdmin
+      io.rancher.container.create_agent: 'true'
+  db:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+    mem_reservation: 1073741824
